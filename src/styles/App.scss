@@ -1,0 +1,400 @@
+main.container-c{
+    background-color: rgb(243, 243, 243);
+
+    display: flex!important;
+    justify-content: center;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+
+    >div:first-child{
+        height: 100%;
+        width: 900px;
+        background-color: rgba(0,0,0 ,.8);
+        // background-color: #f3f3f3;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        z-index: 1000;
+
+        >header:first-child{
+            background-color: rgb(243, 243, 243);
+            height: 35px;
+            min-height: 35px;
+            max-height: 35px;
+            position:relative;
+            display: flex;
+            justify-content: center;
+
+            >button{
+                position: absolute;
+                height: 100%;
+                left: 0;
+                padding: 0;
+                text-indent: 35px;
+                padding-right: .5em;
+                border:none;
+                background-color: rgb(238, 238, 238);
+                border-right: 1px solid rgba(204,204,204, .4);
+                cursor: pointer;
+                outline: 0;
+
+                &:before{
+                    content: '.';
+                    color: transparent;
+                    background-image: url(./extra/open-menu.svg);
+                    background-repeat: no-repeat;
+                    background-position: center;
+                    background-size: 50%;
+                    min-width: 35px;
+                    height: 100%;
+                    position: absolute;
+                    left: -4px;
+                    top: 0;
+                }
+            }
+
+            >label.ttl{
+                display: flex;
+                align-items: center;
+                height: 100%;
+                font-weight: bold;
+                font-size: 1em;
+                &:before{
+                    content: '.';
+                    color: transparent;
+                    background-image: url(./extra/space-invaders.svg);
+                    background-repeat: no-repeat;
+                    background-position: center;
+                    background-size: 70%;
+                    width: 35px;
+                    height: 100%;
+                }
+            }
+            >label:last-child{
+                position:absolute;
+                display: flex;
+                align-items: center;
+                right: 0;
+                margin-right: .5em;
+                top: 50%;
+                transform: translateY(-50%);
+                >svg{
+                    font-size: 1.4em;
+                    margin: 0 .2em 0 0;
+                }
+            }
+        }
+        >section{
+            height: 100%;
+            position: relative;
+            >div{
+                height: 100%;
+                width: 100%;
+                position: absolute;
+                display: flex;
+            }
+            >nav {
+                height: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                >div{
+                    position: relative;
+                    top: -150px;
+                    width: 210px;
+                    >h3{
+                        color: #f3f3f3;
+                        text-align: center;
+                        margin-bottom: 1.4em;
+                    }
+                    >ul{
+                        margin: 0;
+                        padding: 0;
+                        >li{
+                            list-style: none;
+                            margin-bottom: 1em;
+                            >button{
+                                width: 100%;
+                                color: #f3f3f3;
+                                border-radius: .3em;
+                                background-color: transparent;
+                                border: none;
+                                padding: 1.2em 0;
+                                background-color: rgba(204,204,204, .1);
+                                cursor: pointer;
+                                outline: 0;
+                            }
+                        }
+                    }
+                }
+            }
+
+            >div.game-container{
+                justify-content: center;
+                >canvas{
+                    height: 100%;
+                }
+            }
+
+
+
+            >div.game-over{
+                justify-content: center;
+                align-items: center;
+                >div{
+                    >h2{
+                        font-size: 3.5em;
+                        color: #f3f3f3;;
+                    }
+                    >h5{
+                        text-align: center;
+                        color: #f3f3f3;;
+                        font-size: 1.5em;
+                    }
+                }
+            }
+
+            >div.scores-container{
+                // background-color: rgb(3, 128, 44);
+                box-sizing: border-box;
+                flex-direction: column;
+                height: 100%;
+                padding: 0 11em;
+
+                >header{
+                    min-height: 160px;
+                    height: 160px;
+                    max-height: 160px;
+                    display: flex;
+                    align-items: center;
+                    position: relative;
+                    >h3{
+                        position: relative;
+                        display: flex;
+                        align-items: center;
+                        color:#FFF;
+                        margin:0;
+                        font-size:1.9em;
+                        >svg{
+                            margin-right:.25em;
+                            font-size:1.9em;
+                        }
+                    }
+
+                    >div{
+                        position: absolute;
+                        display:flex;
+                        width: 100%;
+                        bottom: .5em;
+                        >div{
+                            width:50%;
+                            &:last-child{
+                                display: flex;
+                                justify-content: flex-end;
+                                >select{
+                                    font-size: .9em;
+                                    background-color: transparent;
+                                    border:none;
+                                    color:#FFF;
+                                    padding: .5em 1em;
+                                    border-radius: .2em;
+                                    border-bottom: 1px solid #FFF;
+                                    outline:0;
+                                    cursor:pointer;
+                                }
+                                >select option {
+                                    margin: 40px;
+                                    background: #000;
+                                    color: #fff;
+                                    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);
+                                }
+                            }
+                        }
+                    }
+                }
+                >section{
+                    height: 100%;
+                    overflow-y: auto;
+                    >table {
+                        thead, tbody {
+                            tr{
+                                border:none!important;
+                            }
+                            th, td{
+                                text-align:center;
+                                color: rgba(255,255,255,.5);
+                                border-bottom: 1px solid rgba(255,255,255,.5);
+                            }
+                        }
+                    }
+                    
+                }
+            }
+
+            div.controls{
+                width: 100%;
+                box-sizing: border-box;
+                flex-direction: column;
+                padding: 0 11em;
+
+                >header{
+                    min-height: 160px;
+                    height: 160px;
+                    max-height: 160px;
+                    display: flex;
+                    align-items: center;
+                    position: relative;
+                    >h3{
+                        position: relative;
+                        display: flex;
+                        align-items: center;
+                        color:#FFF;
+                        margin:0;
+                        font-size:1.9em;
+                        >svg{
+                            margin-right:.25em;
+                            font-size:1.9em;
+                        }
+                    }
+                }
+                >section{
+                    display: flex;
+                    >div{
+                        width: 50%;
+                        >div{
+                            display: flex;
+                            justify-content: center;
+                            margin-bottom: 1em;
+                            align-items: center;
+                            >div{
+                                border-radius: .2em;
+                                width: 80px;
+                                height: 80px;
+                                background-color: rgba(255,255,255,.5);
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;
+                                >label{
+                                    color: #FFF;
+                                    font-size: 2em;
+                                }
+                                >svg{
+                                    color: #FFF;
+                                    font-size: 2em;
+                                }
+                            }
+                            >label{
+                                margin-left: 1em;
+                                color: white;
+                            }
+                            
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    div.preloader{
+        display: flex;
+        flex-wrap: nowrap;
+        >div:first-child{
+            width: 45px;
+            height: 45px;
+            background: {
+                image:url('./extra/preloader.svg');
+                repeat: no-repeat;
+                position: center;
+                size: 90%;
+            };  
+        }
+        >div:last-child{
+            display: flex;
+            align-items: center;
+            text-indent: .5em;
+            font-size: 1.1em;
+            >label{
+                color: #f3f3f3;
+            }
+        }
+        &:after{
+            content: '.';
+            color: transparent;
+            position: fixed;
+            width: 100vw;
+            height: 100vh;
+            top:0;
+            left: 0;
+        }
+    }
+
+
+    // Star backgroud
+    @-webkit-keyframes STAR-MOVE {
+        from {
+            left: 0;
+            top: 0;
+        }
+        to { 
+            left: -10000px;
+            top: -2000px;
+        }
+    }
+    @keyframes STAR-MOVE {
+        from {
+            left: 0;
+            top: 0;
+        }
+        to { 
+            left: -10000px;
+            top: -2000px;
+        }
+    }
+    
+    div#background {
+        background: black url(./extra/background.png) repeat 5% 5%;
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        z-index: 100;
+        
+        -webkit-animation-name: STAR-MOVE;
+        -webkit-animation-duration: 200s;
+        -webkit-animation-timing-function: linear;
+        -webkit-animation-iteration-count: infinite;
+    }
+    
+    div#midground {
+        background: url(./extra/midground.png) repeat 20% 20%;
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        z-index: 200;
+        
+        -webkit-animation-name: STAR-MOVE;
+        -webkit-animation-duration: 150s;
+        -webkit-animation-timing-function: linear;
+        -webkit-animation-iteration-count: infinite;
+    }
+    
+    div#foreground {
+        background: url(./extra/foreground.png) repeat 35% 35%;
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        z-index: 300;
+        
+        -webkit-animation-name: STAR-MOVE;
+        -webkit-animation-duration: 100s;
+        -webkit-animation-timing-function: linear;
+        -webkit-animation-iteration-count: infinite;
+    }
+    
+}
+
+i.custom-icon{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    >svg{
+        font-size: 1.3em;
+    }
+}
