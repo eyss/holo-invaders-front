@@ -1,38 +1,46 @@
 import React from 'react';
 import { MdFormatListNumbered } from 'react-icons/md'
 import Preloader from './Preloader';
+import { connect } from 'react-redux';
+import { gql } from 'apollo-boost';
 
 class Score extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             scores: [
-                {
-                    name: 'Carlos',
-                    score: 1000
-                },
-                {
-                    name: 'Marcos',
-                    score: 5020
-                },
-                {
-                    name: 'Gabriel',
-                    score: 5320
-                },
-                {
-                    name: 'Maria',
-                    score: 5933
-                },
+
             ],
             preloader: false,
         };
+
     }
-    
+
     componentDidMount() {
-
+        this.props.client.query({
+            query: gql`
+            {
+                allScores {
+                score
+                user{
+                    username
+                }
+              }
+            }
+          `
+        }).then(e => {
+            this.setState({
+                scores: e.data.allScores.map(value => {
+                    return {
+                        score: value.score,
+                        name: value.user.username
+                    }
+                })
+            })
+        })
     }
 
-    getScore = (e)=>{
+    getScore = (e) => {
         var matchScore = e.target.value,
             _this = this;
         //matchScore puede tener dos valores
@@ -41,12 +49,51 @@ class Score extends React.Component {
 
         _this.setState({
             preloader: true
-        }, function(){
-            setTimeout(()=>{
-                _this.setState({
-                    preloader: false
-                });
-            }, 2000)
+        }, async function () {
+            var scores = 0;
+            if (matchScore === "as") scores = await this.props.client.query({
+                query: gql`
+                {
+                    allScores {
+                        score
+                        user{
+                            username
+                        }
+                  }
+                }
+              `
+            }).then(e => {
+                return e.data.allScores.map(value => {
+                    return {
+                        score: value.score,
+                        name: value.user.username
+                    }
+                })
+            });
+            else scores = await this.props.client.query({
+                query: gql`
+                {
+                    myUser {
+                        id
+                        username
+                        scores{
+                            score
+                        }
+                    }
+                }
+              `
+            }).then(e => {
+                return e.data.myUser.scores.map(value => {
+                    return {
+                        score: value.score,
+                        name: e.data.myUser.username
+                    }
+                })
+            });
+
+            _this.setState({
+                preloader: false, scores
+            });
         });
     }
 
@@ -58,11 +105,11 @@ class Score extends React.Component {
                         <MdFormatListNumbered />
                         Scores
                     </h3>
-                    
+
                     <div>
                         <div>
                             {
-                                this.state.preloader && 
+                                this.state.preloader &&
                                 <Preloader msg='Loading score' />
                             }
                         </div>
@@ -74,33 +121,36 @@ class Score extends React.Component {
                             </select>
                         </div>
                     </div>
-                    
+
                 </header>
                 <section>
                     <table className="ui very basic table">
                         <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Score</th>
-                        </tr>
+                            <tr>
+                                <th>Name</th>
+                                <th>Score</th>
+                            </tr>
                         </thead>
                         <tbody>
-                        {
-                            this.state.scores.map((data, key) => {
-                                return(
-                                    <tr key = {key}>
-                                        <td>{data.name}</td>
-                                        <td>{data.score}</td>
-                                    </tr>
-                                )
-                            })
-                        }
+                            {
+                                this.state.scores.map((data, key) => {
+                                    return (
+                                        <tr key={key}>
+                                            <td>{data.name}</td>
+                                            <td>{data.score}</td>
+                                        </tr>
+                                    )
+                                })
+                            }
                         </tbody>
                     </table>
                 </section>
-            </div>  
+            </div>
         )
     }
 }
-
-export default Score;
+function mapDispatchToProps(dispatch) {
+    return {}
+}
+function mapStateToProps(state) { return { client: state.client } }
+export default connect(mapStateToProps, mapDispatchToProps)(Score)

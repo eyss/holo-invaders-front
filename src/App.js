@@ -5,196 +5,214 @@ import { MdAccountCircle } from 'react-icons/md'
 import './styles/App.scss';
 import Controls from './components/Controls';
 import Preloader from './components/Preloader';
+import { connect } from 'react-redux';
+import { gql } from 'apollo-boost';
 class App extends React.Component {
-    
-    constructor(props) {
-        super(props);
-        this.state = {
-          sections: {
-            menu: true,
-            spaceInvaders: false,
-            scores: false,
-            controls: false,
-            gameOver: false
-          },
-          score: undefined,
-          preloader: false,
-          modeEndGame: undefined
-        }
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      sections: {
+        menu: true,
+        spaceInvaders: false,
+        scores: false,
+        controls: false,
+        gameOver: false
+      },
+      score: undefined,
+      preloader: false,
+      modeEndGame: undefined
     }
-    
-    componentDidMount(){
-      this.obsScore();
-    }
+  }
 
-    storeScore() {
-      const data = document.querySelector("span#data-game").dataset,
-            score = data.score,
-            modeEndGame = data.endgame,
-            _this = this,
-            preloader = modeEndGame !== 'reset' && parseInt(score) > 0 ? true : false
+  componentDidMount() {
+    this.obsScore();
+  }
 
-        this.setState({
-          preloader,
-          modeEndGame,
-          score
-        }, function(){
-          _this.toggleSections('GameOver');
-        });
+  async storeScore() {
+    const data = document.querySelector("span#data-game").dataset,
+      score = data.score,
+      modeEndGame = data.endgame,
+      _this = this,
+      preloader = modeEndGame !== 'reset' && parseInt(score) > 0 ? true : false
 
-      if (modeEndGame !== 'reset' && parseInt(score) > 0) {
-        /**Se Guarda el Score */
+    this.setState({
+      preloader,
+      modeEndGame,
+      score
+    }, function () {
+      _this.toggleSections('GameOver');
+    });
 
-        /**
-         * Al finalizar el guardado se ejecuta preloaders false
-         * el settime out simula el proceo de store score
-         */
-        setTimeout(()=>{
-          _this.setState({
-            preloader: false
-          })
-        }, 3000)
-      }     
-    }
+    if (modeEndGame !== 'reset' && parseInt(score) > 0) {
+      /**Se Guarda el Score */
 
-    obsScore() {
-      const tiggreGetScore = document.querySelector('#get-score');
-      const actGetScore = fromEvent(tiggreGetScore, 'click');
-      const _this = this;
-      actGetScore.subscribe((e) =>{
-        _this.storeScore();
+      /**
+       * Al finalizar el guardado se ejecuta preloaders false
+       * el settime out simula el proceo de store score
+       */
+      const query = await this.props.client
+        .mutate({
+          mutation: gql`
+          mutation PublishScore(
+            $score: Int!, 
+            $message: String
+          ) {
+            publishScore(score: $score,message:$message) {
+                id
+                username
+            }
+          }
+        `,
+          variables: { score: parseInt(score), message: "mensajejsjs" }
+        })
+      _this.setState({
+        preloader: false
       })
     }
+  }
 
-    toggleSections = (e) => {
-      var sections = {
-            menu: false,
-            start: false,
-            scores: false,
-            controls: false,
-            gameOver: false,
-          },
-          section = typeof(e) === 'object' ? e.target.textContent : e;
+  obsScore() {
+    const tiggreGetScore = document.querySelector('#get-score');
+    const actGetScore = fromEvent(tiggreGetScore, 'click');
+    const _this = this;
+    actGetScore.subscribe((e) => {
+      _this.storeScore();
+    })
+  }
 
-      // eslint-disable-next-line default-case
-      switch(section) {
-        case 'Menu':
-          sections.menu = true;
+  toggleSections = (e) => {
+    var sections = {
+      menu: false,
+      start: false,
+      scores: false,
+      controls: false,
+      gameOver: false,
+    },
+      section = typeof (e) === 'object' ? e.target.textContent : e;
+
+    // eslint-disable-next-line default-case
+    switch (section) {
+      case 'Menu':
+        sections.menu = true;
         break;
 
-        case 'Start':
-          sections.start = true;
+      case 'Start':
+        sections.start = true;
         break;
 
-        case 'Scores':
-          sections.scores = true;
+      case 'Scores':
+        sections.scores = true;
         break;
 
-        case 'Controls':
-          sections.controls = true;
+      case 'Controls':
+        sections.controls = true;
         break;
 
-        case 'GameOver':
-          sections.gameOver = true;
+      case 'GameOver':
+        sections.gameOver = true;
         break;
+    }
+    this.setState({ sections }, function () {
+      if (section === 'Start') {
+        document.querySelector('#start-game').click();
       }
-      this.setState({sections}, function() {
-        if (section === 'Start') {
-          document.querySelector('#start-game').click();
-        }
-      });
-    }
+    });
+  }
 
-    render() {
-        return (
-            <main className="container-c">
-              <div>
-                <header>
-                  {!this.state.sections.menu &&
-                    <button onClick={e => this.toggleSections(e)}>
-                      Menu
-                    </button> 
-                  }
-                  <label className='ttl'>Space Invaders</label>
+  render() {
+    return (
+      <main className="container-c">
+        <div>
+          <header>
+            {!this.state.sections.menu &&
+              <button onClick={e => this.toggleSections(e)}>
+                Menu
+                    </button>
+            }
+            <label className='ttl'>Space Invaders</label>
 
-                  <label><MdAccountCircle />  UserName</label>
-                </header>
+            <label><MdAccountCircle />  UserName</label>
+          </header>
 
-                <section>
-                  {
-                    this.state.sections.menu && 
-                    <nav>
-                      <div>
-                        <h3>
-                          Menu
+          <section>
+            {
+              this.state.sections.menu &&
+              <nav>
+                <div>
+                  <h3>
+                    Menu
                         </h3>
-                        <ul>
-                          <li>
-                            <button onClick={e => this.toggleSections(e)}>
-                              Start
+                  <ul>
+                    <li>
+                      <button onClick={e => this.toggleSections(e)}>
+                        Start
                             </button>
-                          </li>
-                          <li>
-                            <button onClick={e => this.toggleSections(e)}>
-                              Scores
+                    </li>
+                    <li>
+                      <button onClick={e => this.toggleSections(e)}>
+                        Scores
                             </button>
-                          </li>
-                          <li>
-                            <button onClick={e => this.toggleSections(e)}>
-                              Controls
+                    </li>
+                    <li>
+                      <button onClick={e => this.toggleSections(e)}>
+                        Controls
                             </button>
-                          </li>
-                        </ul>
-                      </div>
-                    </nav>
-                  }
+                    </li>
+                  </ul>
+                </div>
+              </nav>
+            }
 
-                  {
-                    this.state.sections.start && 
-                    <div className="game-container">
-                      <canvas id="game-canvas"></canvas>
-                    </div>
-                  }
-
-                  {
-                    this.state.sections.gameOver && 
-                    <div className='game-over'>
-                      <div>
-
-                        <h2>Game Over</h2>
-                        {
-                          this.state.modeEndGame !== 'reset' &&
-                          <h5>Your score: {this.state.score}</h5>
-                        }
-
-                        {
-                          this.state.preloader &&
-                            <Preloader msg = 'Storing score' />
-                        }
-                      </div>
-                    </div>
-                  }
-
-                  {
-                    this.state.sections.controls && 
-                    <div>
-                      <Controls />
-                    </div>
-                  }
-
-                  {
-                    this.state.sections.scores &&
-                    <Score />
-                  }
-                </section>
+            {
+              this.state.sections.start &&
+              <div className="game-container">
+                <canvas id="game-canvas"></canvas>
               </div>
+            }
 
-              <div id="background"></div>
-              <div id="midground"></div>
-              <div id="foreground"></div>
-            </main>
-        )
-    }
+            {
+              this.state.sections.gameOver &&
+              <div className='game-over'>
+                <div>
+
+                  <h2>Game Over</h2>
+                  {
+                    this.state.modeEndGame !== 'reset' &&
+                    <h5>Your score: {this.state.score}</h5>
+                  }
+
+                  {
+                    this.state.preloader &&
+                    <Preloader msg='Storing score' />
+                  }
+                </div>
+              </div>
+            }
+
+            {
+              this.state.sections.controls &&
+              <div>
+                <Controls />
+              </div>
+            }
+
+            {
+              this.state.sections.scores &&
+              <Score />
+            }
+          </section>
+        </div>
+
+        <div id="background"></div>
+        <div id="midground"></div>
+        <div id="foreground"></div>
+      </main>
+    )
+  }
 }
-
-export default App;
+function mapDispatchToProps(dispatch) {
+  return {}
+}
+function mapStateToProps(state) { return { user: state.userId, client: state.client } }
+export default connect(mapStateToProps, mapDispatchToProps)(App)
