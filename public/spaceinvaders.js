@@ -265,9 +265,9 @@ var Player = SheetSprite.extend({
   
   handleInput: function() {
     if (isKeyDown(LEFT_KEY)) {
-      this.xVel = -175;
+      this.xVel = -400;
     } else if (isKeyDown(RIGHT_KEY)) {
-      this.xVel = 175;
+      this.xVel = 400;
     } else this.xVel = 0;
     
     if (wasKeyPressed(SHOOT_KEY)) {
@@ -355,7 +355,7 @@ var Enemy = SheetSprite.extend({
   },
   
   shoot: function() {
-    this.bullet = new Bullet(this.position.x, this.position.y + this.bounds.w/2, -1, 500);
+    this.bullet = new Bullet(this.position.x, this.position.y + this.bounds.w/2, -1, 650);
   },
   
   update: function(dt) {
@@ -376,7 +376,7 @@ var Enemy = SheetSprite.extend({
       }
       
       var fireTest = Math.floor(Math.random() * (this.stepDelay + 1));
-      if (getRandomArbitrary(0, 1000) <= 5 * (this.stepDelay + 1)) {
+      if (getRandomArbitrary(0, 1000) <= 10 * (this.stepDelay + 1)) {
         this.doShoot = true;
       }
       this.position.x += 10 * alienDirection;
@@ -556,7 +556,6 @@ function wasKeyPressed(key) {
   return !prevKeyStates[key] && keyStates[key];
 }
 
-
 // ###################################################################
 // Drawing & Update functions
 //
@@ -575,13 +574,13 @@ function updateAliens(dt) {
       alien = null;
       alienCount--;
       if (alienCount < 1) {
-        wave++;
+        wave+=3;
         setupAlienFormation();
       }
       return;
     }
     
-    alien.stepDelay = ((alienCount * 20) - (wave * 10)) / 1000;
+    alien.stepDelay = ((alienCount * 20) - (wave * 150)) / 1000;
     if (alien.stepDelay <= 0.05) {
       alien.stepDelay = 0.05;
     }
