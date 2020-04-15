@@ -30,7 +30,7 @@ async function start() {
         }
     });
 
-    const client = await connect(process.env.NODE_ENV === "development" ? { url: "ws://localhost:8888" } : undefined)
+    const client = await connect(process.env.NODE_ENV === "development" ? { url: "ws://192.168.150.129:8888" } : undefined)
         .then((context) => {
             const schema = makeExecutableSchema({
                 typeDefs,

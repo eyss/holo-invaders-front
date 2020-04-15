@@ -250,6 +250,8 @@ var Player = SheetSprite.extend({
     this.bullets = [];
     this.bulletDelayAccumulator = 0;
     this.score = 0;
+    this.hits=0;
+    this.bulletsCounter=0;
   },
   
   reset: function() {
@@ -259,6 +261,8 @@ var Player = SheetSprite.extend({
   },
   
   shoot: function() {
+
+    this.bulletsCounter+=1;
     var bullet = new Bullet(this.position.x, this.position.y - this.bounds.h / 2, 1, 1000);
     this.bullets.push(bullet);
   },
@@ -604,6 +608,7 @@ function resolveBulletEnemyCollisions() {
       if (checkRectCollision(bullet.bounds, alien.bounds)) {
         alien.alive = bullet.alive = false;
         particleManager.createExplosion(alien.position.x, alien.position.y, 'transparent', 70, 5,5,3,.15,50);
+        player.hits += 1  ;
         player.score += 25;
       }
     }
@@ -616,6 +621,8 @@ function resolveBulletPlayerCollisions() {
     if (alien.bullet !== null && checkRectCollision(alien.bullet.bounds, player.bounds)) {
       if (player.lives === 0) {
         document.querySelector("span#data-game").dataset.score = player.score;
+        document.querySelector("span#data-game").dataset.hits = player.bulletsCounter>0?Math.round(player.hits/player.bulletsCounter*100):0;
+
         document.querySelector("span#data-game").dataset.endgame = 'normal';
         document.querySelector('button#get-score').click();
         hasGameStarted = false;
@@ -678,7 +685,7 @@ function drawBottomHud() {
                  player.clipRect.h, 45, CANVAS_HEIGHT - 23, player.clipRect.w * 0.5,
                  player.clipRect.h * 0.5);
   // fillText('CREDIT: ', CANVAS_WIDTH - 115, CANVAS_HEIGHT - 7.5);
-  fillCenteredText('SCORE: ' + player.score, CANVAS_WIDTH/2, 20);
+  fillCenteredText(`SCORE:${player.score} HITS:${player.bulletsCounter>0?Math.round(player.hits/player.bulletsCounter*100):0}%`, CANVAS_WIDTH/2, 20);
   // fillBlinkingText('00', CANVAS_WIDTH - 25, CANVAS_HEIGHT - 7.5, TEXT_BLINK_FREQ);
 }
 

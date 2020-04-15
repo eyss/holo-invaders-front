@@ -22,6 +22,7 @@ class Score extends React.Component {
             {
                 allScores {
                 score
+                message
                 user{
                     username
                 }
@@ -33,6 +34,7 @@ class Score extends React.Component {
                 scores: e.data.allScores.map(value => {
                     return {
                         score: value.score,
+                        hits:value.message,
                         name: value.user.username
                     }
                 })
@@ -56,6 +58,7 @@ class Score extends React.Component {
                 {
                     allScores {
                         score
+                        message
                         user{
                             username
                         }
@@ -66,6 +69,7 @@ class Score extends React.Component {
                 return e.data.allScores.map(value => {
                     return {
                         score: value.score,
+                        hits:value.message,
                         name: value.user.username
                     }
                 })
@@ -78,6 +82,7 @@ class Score extends React.Component {
                         username
                         scores{
                             score
+                            message
                         }
                     }
                 }
@@ -86,6 +91,7 @@ class Score extends React.Component {
                 return e.data.myUser.scores.map(value => {
                     return {
                         score: value.score,
+                        hits:value.message,
                         name: e.data.myUser.username
                     }
                 })
@@ -129,6 +135,8 @@ class Score extends React.Component {
                             <tr>
                                 <th>Name</th>
                                 <th>Score</th>
+                                <th>Hits %</th>
+
                             </tr>
                         </thead>
                         <tbody>
@@ -138,6 +146,8 @@ class Score extends React.Component {
                                         <tr key={key}>
                                             <td>{data.name}</td>
                                             <td>{data.score}</td>
+                                            <td>{data.hits}%</td>
+
                                         </tr>
                                     )
                                 })

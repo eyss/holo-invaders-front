@@ -19,6 +19,7 @@ class App extends React.Component {
         controls: false,
         gameOver: false
       },
+      hits:0,
       score: undefined,
       preloader: false,
       modeEndGame: undefined
@@ -33,13 +34,14 @@ class App extends React.Component {
     const data = document.querySelector("span#data-game").dataset,
       score = data.score,
       modeEndGame = data.endgame,
+      hits=data.hits,
       _this = this,
       preloader = modeEndGame !== 'reset' && parseInt(score) > 0 ? true : false
 
     this.setState({
       preloader,
       modeEndGame,
-      score
+      score,hits
     }, function () {
       _this.toggleSections('GameOver');
     });
@@ -64,7 +66,7 @@ class App extends React.Component {
             }
           }
         `,
-          variables: { score: parseInt(score), message: "mensajejsjs" }
+          variables: { score: parseInt(score), message: hits }
         })
       _this.setState({
         preloader: false
@@ -179,7 +181,9 @@ class App extends React.Component {
                   <h2>Game Over</h2>
                   {
                     this.state.modeEndGame !== 'reset' &&
-                    <h5>Your score: {this.state.score}</h5>
+                    <><h5>Your score: {this.state.score}</h5>
+                    <h5>Your hits percent: {this.state.hits}%</h5></>
+
                   }
 
                   {
