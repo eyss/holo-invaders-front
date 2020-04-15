@@ -181,8 +181,13 @@ class App extends React.Component {
                   <h2>Game Over</h2>
                   {
                     this.state.modeEndGame !== 'reset' &&
-                    <><h5>Your score: {this.state.score}</h5>
-                    <h5>Your hits percent: {this.state.hits}%</h5></>
+                    <><h5>Your score: {this.state.score}
+                    {this.state.score>5000?<p style={{color:"transparent",textShadow:"0 0 0 red" }}>🚀</p>:<p style={{color:"transparent",textShadow:"0 0 0 green" }}>🚀</p>}
+                    </h5>
+                    <h5>Your hits percent: {this.state.hits}%
+                    {this.state.hits>50?<p style={{color:"transparent",textShadow:"0 0 0 orange" }}>🚀</p>:null}
+                    
+                    </h5></>
 
                   }
 

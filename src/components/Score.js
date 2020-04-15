@@ -145,8 +145,8 @@ class Score extends React.Component {
                                     return (
                                         <tr key={key}>
                                             <td>{data.name}</td>
-                                            <td>{data.score}</td>
-                                            <td>{data.hits}%</td>
+                                    <td>{data.score}{data.score>5000?<p style={{color:"transparent",textShadow:"0 0 0 red" }}> 🚀</p>:<p style={{color:"transparent",textShadow:"0 0 0 green" }}>🚀</p>}</td>
+                                            <td>{data.hits}%{data.hits>50?<p style={{color:"transparent",textShadow:"0 0 0 orange" }}>🚀</p>:null}</td>
 
                                         </tr>
                                     )
