@@ -355,7 +355,7 @@ var Enemy = SheetSprite.extend({
   },
   
   shoot: function() {
-    this.bullet = new Bullet(this.position.x, this.position.y + this.bounds.w/2, -1, 650);
+    this.bullet = new Bullet(this.position.x, this.position.y + this.bounds.w/2, -1, 500);
   },
   
   update: function(dt) {
@@ -580,7 +580,7 @@ function updateAliens(dt) {
       return;
     }
     
-    alien.stepDelay = ((alienCount * 20) - (wave * 150)) / 1000;
+    alien.stepDelay = ((alienCount * 20) - (wave * 100)) / 1000;
     if (alien.stepDelay <= 0.05) {
       alien.stepDelay = 0.05;
     }
