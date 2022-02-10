@@ -15,7 +15,7 @@
     "geteventlisteners": "^1.1.0",
     "graphql": "^14.5.8",
     "graphql-tools": "^4.0.6",
-    "node-sass": "^4.13.0",
+    "node-sass": "^7.0.0",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "react-icons": "^3.8.0",
